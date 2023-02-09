@@ -21,6 +21,6 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.49.0
+          version: v1.51.1
           args: -c ./build/.golangci.optional.yml --issues-exit-code=0
           only-new-issues: true
