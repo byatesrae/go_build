@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Create .env
+      run: |
+        cat > .env << EOF
+        BUILD_IMAGE=coverto/go_build:v1.2.0
+        GITHUB_TOKEN=TODO_NOT_YET_USED
+        EOF
+    - name: Lint
+      run: make lint-dockerized
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - name: Create .env
+      run: |
+        cat > .env << EOF
+        BUILD_IMAGE=coverto/go_build:v1.2.0
+        GITHUB_TOKEN=TODO_NOT_YET_USED
+        EOF
+    - name: Test
+      run: make test-dockerized
+    - name: Generate test coverage
+      run: make generate-test-coverage-dockerized
+    - name: Upload test coverage
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: 'coverage.html'
