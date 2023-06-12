@@ -10,7 +10,7 @@ if [ ! -f  ".env" ]; then
     echo    
     echo " * Don't forget to replace the \"FILL_IN_MANUALLY\" values in your new .env file."
 
-    cp -n ./.env.local.example ./.env
+    cp -n ./build/.env.local.example ./.env
 
     echo
     echo " * Done."
