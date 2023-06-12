@@ -22,7 +22,7 @@ docker run \
     --env-file=.env \
     --workdir="/src" \
     --entrypoint /bin/bash \
-    $BUILD_IMAGE \
+    coverto/go_build:v1.2.0 \
     "-c" "./build/scripts/docker/config.sh; ./build/scripts/lint.sh;" 
 
 reset_owner_of_files

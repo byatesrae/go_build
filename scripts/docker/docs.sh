@@ -17,5 +17,5 @@ docker run \
     --workdir="/src" \
     --entrypoint /bin/bash \
     -p $DOCS_PORT:$DOCS_PORT \
-    $BUILD_IMAGE \
+    coverto/go_build:v1.2.0 \
     "-c" "./build/scripts/docker/config.sh; ./build/scripts/docs.sh;" 
