@@ -11,12 +11,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: Create .env
-      run: |
-        cat > .env << EOF
-        BUILD_IMAGE=coverto/go_build:v1.2.0
-        GITHUB_TOKEN=TODO_NOT_YET_USED
-        EOF
     - name: Lint
       run: make lint-dockerized
   test:
@@ -26,12 +20,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-    - name: Create .env
-      run: |
-        cat > .env << EOF
-        BUILD_IMAGE=coverto/go_build:v1.2.0
-        GITHUB_TOKEN=TODO_NOT_YET_USED
-        EOF
     - name: Test
       run: make test-dockerized
     - name: Generate test coverage
