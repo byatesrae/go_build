@@ -1,5 +1,5 @@
 ## Requires
-* Dependencies outlined in [the Go Build dockerfile](https://github.com/byatesrae/docker.go_build/blob/v1.2.0/Dockerfile).
+* Dependencies outlined in [the Go Build dockerfile](https://github.com/byatesrae/go_build/blob/wip/Dockerfile).
 * Docker (tested with 20.10.12).
 
 ## Setup
