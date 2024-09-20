@@ -1,1 +1,1 @@
-include ./build/Makefile
+include ./devops/common/Makefile
