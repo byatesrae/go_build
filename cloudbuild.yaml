@@ -1,0 +1,71 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-push
+    script: |
+      #!/bin/bash
+
+      # Builds the dev service defined in docker-compose.yml for multiple platforms and pushes
+      # it to the registry.
+      # Note: we cannot build a multi platform image without pushing. See https://github.com/docker/buildx/issues/59.
+
+      set -e
+
+      source ./scripts/lib/env.sh
+
+      echo " * Building ..."
+
+      set +e # Check to see if the builder exists
+      docker buildx inspect $PROJECT_NAME > /dev/null
+
+      buildxInspectExitStatus=$?
+      if [ $buildxInspectExitStatus -ne 0 ] # if non-zero, builder does not exist
+      then
+          docker buildx create --bootstrap --use --name $PROJECT_NAME
+      fi
+
+      docker buildx bake --push dev
+
+  # Add more tags
+  - name: 'gcr.io/cloud-builders/docker'
+    id: tag
+    env:
+      - 'COMMIT_SHA=$COMMIT_SHA'
+      - 'LOCATION=$LOCATION'
+      - 'PROJECT_ID=$PROJECT_ID'
+      - 'REPO_NAME=$REPO_NAME'
+      - 'TAG_NAME=$TAG_NAME'
+      - '_PR_NUMBER=$_PR_NUMBER'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - '_REGISTRY_NAME=$_REGISTRY_NAME'
+    script: |
+      #!/bin/bash
+      echo docker pull $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA
+      docker pull $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA
+
+      if [ ! -z "$TAG_NAME" ] && [ "$BRANCH_NAME" = "master" ]; then
+          echo docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$TAG_NAME
+          docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$TAG_NAME
+
+          echo docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:latest
+          docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:latest
+      fi
+
+      if [ ! -z "$_PR_NUMBER" ]; then
+          echo docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:pr_$_PR_NUMBER
+          docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:pr_$_PR_NUMBER
+      fi
+
+      if [ ! -z "$BRANCH_NAME" ]; then
+          echo docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:branch_$BRANCH_NAME
+          docker tag $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:branch_$BRANCH_NAME
+      fi
+
+  # Push new tags
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '--all-tags', '$LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev']
+
+images:
+  - $LOCATION-docker.pkg.dev/$PROJECT_ID/$_REGISTRY_NAME/dev:$COMMIT_SHA
+
+options:
+  logging: CLOUD_LOGGING_ONLY

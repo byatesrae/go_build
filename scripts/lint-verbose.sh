@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Generates all generated code (dockerized).
+# Runs verbose linting (dockerized).
 # Intended to be invoked from the repository root.
 
 set -e
@@ -19,21 +19,20 @@ reset_owner_of_files() {
     if [[ ! -z "$GOCACHE" ]]
     then
         set_owner_of_files_to_current_user $GOCACHE
-    fi
-
-    set_owner_of_files_to_current_user .  
+    fi    
 }
 
 trap reset_owner_of_files ERR
 
-echo " * Generating code dockerized ..."
+echo " * Running verbose linting dockerized ..."
 docker compose \
     -f ./devops/common/docker-compose.yml \
     run \
     --remove-orphans \
     --rm \
     ${GOCACHE:+--volume $GOCACHE:/root/.cache/go-build} \
-    dev ./devops/common/scripts/lib/generate-code.sh
+    --env GOLANGCI_LINT_CACHE=/root/.cache/go-build \
+    dev ./devops/common/scripts/lib/lint-verbose.sh
 
 reset_owner_of_files
 

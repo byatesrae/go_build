@@ -1,0 +1,44 @@
+---
+version: '3.7'
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      x-bake:
+        platforms:
+          - linux/amd64
+          #- linux/arm64 # Uncomment to add an extra platform to the build
+    image: ${PROJECT_NAME}-dev:${GIT_SHA}
+    container_name: ${COMPOSE_PROJECT_NAME}-dev
+    env_file:
+      - ../../.env
+    environment:
+      CGO_ENABLED: 0
+      DOCKER_NETWORK: ${COMPOSE_NETWORK}
+    networks:
+    - default
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - $PROJECT_DIRECTORY:/workspace
+    working_dir: /workspace
+
+  docs:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: ${PROJECT_NAME}-dev:${GIT_SHA}
+    container_name: ${COMPOSE_PROJECT_NAME}-docs
+    env_file:
+      - ../../.env
+    volumes:
+    - $PROJECT_DIRECTORY:/workspace
+    working_dir: /workspace
+    command:
+    - "./devops/common/scripts/lib/docs.sh"
+    ports:
+      - '$DOCS_PORT:$DOCS_PORT'
+
+networks:
+  default:
+    name: ${COMPOSE_NETWORK}
