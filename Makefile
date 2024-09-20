@@ -45,3 +45,11 @@ test: ## Runs all tests (dockerized).
 .PHONY: generate-test-coverage
 generate-test-coverage: ## Generates test coverage reports (dockerized).
 	@./devops/common/scripts/generate-test-coverage.sh
+
+.PHONY: rebuild
+rebuild: ## Rebuilds the services defined in docker-compose.yml.
+	@./devops/common/scripts/rebuild.sh
+
+.PHONY: run
+run: ## Runs the services defined in docker-compose.yml.
+	@./devops/common/scripts/run.sh
