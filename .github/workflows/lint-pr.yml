@@ -22,5 +22,5 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.60.2
-          args: -c ./build/.golangci.verbose.yml --issues-exit-code=0
+          args: -c ./devops/common/.golangci.verbose.yml --issues-exit-code=0
           only-new-issues: true
