@@ -28,5 +28,6 @@ linters:
     - testpackage
     - gci
     - goerr113
+    - depguard
   max-issues-per-linter: 0
   max-same-issues: 0

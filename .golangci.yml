@@ -31,3 +31,4 @@ linters:
     - revive
     - gofmt
     - gocritic
+    - tagliatelle
