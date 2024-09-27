@@ -18,6 +18,9 @@ linters-settings:
       - opinionated
       - performance
       - style
+  testifylint:
+    disable:
+      - require-error
       
 linters:
   enable-all: true
