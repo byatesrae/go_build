@@ -15,9 +15,10 @@ docker compose up --remove-orphans
 
 dockerComposeUpExitStatus=$?
 
+echo " * Docker Compose exited($dockerComposeUpExitStatus)..."
+
 # If docker compose was not interrupted with ctrl+c.
-if [ $dockerComposeUpExitStatus -ne 130 ] 
-then
+if [ $dockerComposeUpExitStatus -ne 130 ] && [ $dockerComposeUpExitStatus -ne 0 ]; then
     exit $dockerComposeUpExitStatus
 fi
 

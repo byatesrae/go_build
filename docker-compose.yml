@@ -1,5 +1,4 @@
 ---
-version: '3.7'
 services:
   dev:
     build:
@@ -16,6 +15,8 @@ services:
     environment:
       CGO_ENABLED: 0
       DOCKER_NETWORK: ${COMPOSE_NETWORK}
+      COMPOSE_NETWORK: ${COMPOSE_NETWORK}
+      COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
     networks:
     - default
     volumes:
