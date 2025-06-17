@@ -1,4 +1,4 @@
-FROM golang:1.23.9-alpine3.21
+FROM golang:1.24.4-alpine3.22
 
 # Git complains about unsafe directories without this.
 RUN touch ~/.gitconfig && \
