@@ -14,8 +14,8 @@ RUN apk add --no-cache --upgrade \
     git \
     docker-cli
 
-RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.60.2
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.1.6
 
 RUN curl -sSf https://atlasgo.sh | ATLAS_VERSION=v0.34.0 CI=true sh
 
-RUN go install golang.org/x/pkgsite/cmd/pkgsite@v0.0.0-20240913130837-7d0ea0a0e8cd
+RUN go install golang.org/x/pkgsite/cmd/pkgsite@v0.0.0-20250611185244-041c7c0b878c

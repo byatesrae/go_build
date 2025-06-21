@@ -12,5 +12,3 @@ read_env_file
 
 echo " * Rebuilding dev image ..."
 docker compose -f ./devops/common/docker-compose.yml build dev
-
-echo " * Removing Docker network $(docker network rm ${COMPOSE_NETWORK})"

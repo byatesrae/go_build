@@ -8,7 +8,7 @@ set -e
 echo " * Linting ..."
 echo
 
-$(go env GOPATH)/bin/golangci-lint run ./... -v --timeout 60m --max-issues-per-linter 50 --max-same-issues 50 --exclude-use-default=false
+$(go env GOPATH)/bin/golangci-lint run ./... -c ./devops/common/.golangci.yml -v --timeout 60m --max-issues-per-linter 50 --max-same-issues 50
 
 echo
 echo " * Done."
