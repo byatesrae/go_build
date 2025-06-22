@@ -1,33 +1,21 @@
 # This config contains a much more verbose assessment of the code than that defined
 # in .golangci.yml and is not suitable as a quality gate in CI.
+version: "2"
 run:
   modules-download-mode: vendor
   issues-exit-code: 1
   tests: true
-
   timeout: 2m
-  skip-dirs-use-default: true
+  relative-path-mode: gomod
 
-linters-settings:
-  goimports:
-    local-prefixes: github.com/byatesrae/
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-  testifylint:
-    disable:
-      - require-error
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:    
+    goimports:
+      local-prefixes: 
+        - github.com/byatesrae/
       
-linters:
+linters:  
   enable-all: true
-  disable:
-    - testpackage
-    - gci
-    - goerr113
-    - depguard
-  max-issues-per-linter: 0
-  max-same-issues: 0
