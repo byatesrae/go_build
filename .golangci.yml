@@ -30,6 +30,9 @@ linters:
     - misspell
   settings:
     gocritic:
+      disabled-checks:
+        - rangeValCopy
+        - appendCombine
       enabled-tags:
         - diagnostic
         - experimental
