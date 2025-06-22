@@ -1,0 +1,27 @@
+steps:    
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build-dev
+    waitFor: ['-']
+    env:
+      - 'GOCACHE=/workspace/.cache/go-build'
+    script: |
+      make build-dev
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: lint
+    waitFor: ['build-dev']
+    env:
+      - 'GOCACHE=/workspace/.cache/go-build'
+    script: |
+      make lint
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: test
+    waitFor: ['build-dev']
+    env:
+      - 'GOCACHE=/workspace/.cache/go-build'
+    script: |
+      make test
+
+options:
+  logging: CLOUD_LOGGING_ONLY

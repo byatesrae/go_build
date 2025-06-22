@@ -1,0 +1,21 @@
+# This config contains a much more verbose assessment of the code than that defined
+# in .golangci.yml and is not suitable as a quality gate in CI.
+version: "2"
+run:
+  modules-download-mode: vendor
+  issues-exit-code: 1
+  tests: true
+  timeout: 2m
+  relative-path-mode: gomod
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:    
+    goimports:
+      local-prefixes: 
+        - github.com/byatesrae/
+      
+linters:  
+  enable-all: true

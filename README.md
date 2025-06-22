@@ -13,10 +13,11 @@ This component only serves it's purpose when used as a Git Submodule:
 ## Setup
 1. In the parent repository, add this repository as a submodule with:
     ```
-    git submodule add https://github.com/byatesrae/go_build build/
+    git submodule add https://github.com/byatesrae/go_build devops/common/
     ````
 1. Copy the contents of `./examples` to the parent repository. All files copied can
-be extended.
+be extended. All files are optional. For example, you may not want the [examples/.github/workflows/ci.yml](examples/.github/workflows/ci.yml)
+in addition to the [./examples/cloudbuild.yaml](./examples/cloudbuild.yaml).
 
 ## Development
 Run the following in the parent repository:
